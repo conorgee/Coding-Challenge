@@ -1,7 +1,7 @@
 # Coding_Challenge
 The focus of this coding challenge is building a lightweight test framework that uses Selenium or Webdriver.io as core technology. 
 
-## step 1
+## Step 1
 
 Create a virtual environment (optional but recommended):
 
@@ -13,7 +13,7 @@ source venv/bin/activate
  venv\Scripts\activate
 ```
 
-## step 2 
+## Step 2 
 
 Install the required libraries.
 
@@ -21,9 +21,9 @@ Install the required libraries.
 pip install pytest selenium webdriver_manager
 ```
 
-## step 3
+## Step 3
 
-Install the required libraries.
+Excute the script.
 
 ```bash
 pytest test_ryanair.py
@@ -31,7 +31,7 @@ pytest test_ryanair.py
 
 # Using Docker (optional)
 
-## step 1
+## Step 1
 
 Create a Dockerfile in the project directory:
 
@@ -47,7 +47,7 @@ COPY . /app
 
 CMD ["pytest"]
 ```
-## step 2
+## Step 2
 
 Create a docker-compose.yml file:
 
@@ -59,7 +59,7 @@ services:
 ```
 
 
-## step 3 
+## Step 3 
 
 Create a requirements.txt file:
 
@@ -68,7 +68,7 @@ pytest
 selenium
 ```
 
-## step 4 
+## Step 4 
 
 To run the test case from a Docker container, execute the following commands:
 
