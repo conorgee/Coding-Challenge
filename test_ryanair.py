@@ -1,29 +1,25 @@
 import pytest
-import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 @pytest.fixture(scope="module")
 def driver():
     # Set up Chrome WebDriver with the specified executable path
-    service = Service(executable_path='C:/Users/LENOVO/Gensis/chromedriver-win64/chromedriver.exe')  
     options = webdriver.ChromeOptions()
-    #options.add_argument("--headless")  # Optional: Run Chrome in headless mode
-    #options.add_argument("--no-sandbox")  # Required for running in headless mode on some systems
-    #options.add_argument("--disable-dev-shm-usage")  # Required for running in headless mode on some systems
-    driver = webdriver.Chrome(service=service, options=options)
+    options.add_argument("--headless")  # Optional: Run Chrome in headless mode
+    options.add_argument("--no-sandbox")  # Required for running in headless mode on some systems
+    options.add_argument("--disable-dev-shm-usage")  # Required for running in headless mode on some systems
+    driver = webdriver.Chrome(options=options)
     yield driver
     driver.quit()
 
     
 # Global variable to store the previously clicked seat column
 previous_column = -1
-
 
 def test_ryanair_booking_flow(driver):
    # Step 1
@@ -220,20 +216,21 @@ def test_ryanair_booking_flow(driver):
     next_flight_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@_ngcontent-ng-c3388265545 and @ry-button and @class='passenger-carousel__button-next ry-button ry-button--gradient-yellow ry-button--flat-blue' and @data-ref='seats-action__button-next']")))
     next_flight_button.click()
 
-    # Click the 'Pick these seats' button
+    # Click the 'Pick these seats' button for return flights
     try:
-        pick_seats_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@ry-button and @color='anchor-blue' and contains(text(), 'Pick these seats')]")))
-        pick_seats_button.click()
+        return_seats_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@ry-button and @color='anchor-blue' and contains(text(), 'Pick these seats')]")))
+        return_seats_button.click()
     except TimeoutException as e:
         print("The 'Pick these seats' button is not present on the page. Selecting return seats instead.")
         # Select the return seats using the same logic as before
-        third_available_seat = find_next_available_seat(18, 0)
-        if third_available_seat:
-            driver.find_element(By.ID, third_available_seat).click()
+        return_flight_first_seat = find_next_available_seat(18, 0)
+        if return_flight_first_seat:
+            driver.find_element(By.ID, return_flight_first_seat).click()
 
-        fourth_available_seat = find_next_available_seat(18, 0)  # Start searching from column 0 again
-        if fourth_available_seat:
-            driver.find_element(By.ID, fourth_available_seat).click()
+        return_flight_second_seat = find_next_available_seat(18, 0)  # Start searching from column 0 again
+        if return_flight_second_seat:
+            driver.find_element(By.ID, return_flight_second_seat).click()
+            
     # Dismiss any pop-ups
     try:
         # Try to find and click the element to dismiss the pop-up
